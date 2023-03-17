@@ -1,0 +1,39 @@
+package ng.siteworx.partner.controllers
+
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+
+@RestController
+@RequestMapping("/api/test")
+class TestApi {
+    @GetMapping("/all")
+    fun allAccess():String{
+        return "public content"
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    fun userAccess():String{
+        return "User Content"
+    }
+
+    @GetMapping("/mod")
+    @PreAuthorize("hasRole('MODERATOR')")
+    fun moderatorAccess(): String{
+        return "Moderator Board"
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun adminAccess():String{
+        return "Admin Board"
+    }
+}
+
+
+
+
+
