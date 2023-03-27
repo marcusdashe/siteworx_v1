@@ -4,6 +4,8 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
+import ng.siteworx.partner.user.artisan.models.Artisan
+import ng.siteworx.partner.user.client.model.Client
 import ng.siteworx.partner.user.merchant.model.Merchant
 import java.time.LocalDateTime
 import java.util.*
@@ -35,6 +37,9 @@ class Everyone {
     @Column(name = "verification", nullable=true)
     var verificationToken: String? = ""
 
+    @Column(name = "avatar_url")
+    var avatarUrl: String? = null
+
     @Column(name="created_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     var created: LocalDateTime = LocalDateTime.now()
@@ -51,8 +56,17 @@ class Everyone {
     @OneToOne(mappedBy = "everyone", cascade = [CascadeType.ALL])
     var merchant: Merchant? = null
 
-    @OneToOne(mappedBy = "bank", cascade = [CascadeType.ALL])
-    var bankAccount: BankAccount? = null
+    @OneToOne(mappedBy = "everyone", cascade = [CascadeType.ALL])
+    var client: Client? = null
+
+    @OneToOne(mappedBy = "everyone", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var artisan: Artisan? = null
+
+    @OneToOne(mappedBy = "everyone", cascade = [CascadeType.ALL])
+    var bank: Bank? = null
+
+    @OneToOne(mappedBy = "everyone", fetch = FetchType.LAZY, cascade = arrayOf(CascadeType.ALL))
+    var contact: Contact? = null
 
 //    @PrePersist
 //    fun onCreate() {

@@ -13,36 +13,31 @@ class Merchant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    @Size(max = 30)
-    @Size(min = 2, message = "Name must be between 2 and 30 characters")
+//    @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
     @Column(name="first_name", nullable = false)
-    var firstName: String? = null
+    var firstName: String? = ""
 
-    @Size(max = 30)
-    @Size(min = 2, message = "Name must be between 2 and 30 characters")
+//    @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
     @Column(name="last_name", nullable = false)
-    var lastName: String? = null
+    var lastName: String? = ""
 
     @Column(name = "availability", nullable = false)
-    var isAvailable: Boolean = false
+    var isAvailable: Boolean? = false
 
     @Column(name = "subscribe", nullable = false)
-    var hasSubscribe: Boolean = false
+    var hasSubscribe: Boolean? = false
 
     @Column(name = "subscription_level", nullable = false)
     @Enumerated(EnumType.STRING)
     var subscriptionLevel: Constants.SUBSCRIPTION_LEVEL = Constants.SUBSCRIPTION_LEVEL.FREE
 
-    @Column(name = "avatar_url")
-    var avatarUrl: String? = null
-
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "everyone_id", nullable = false)
+    @JoinColumn(name = "everyone_id")
     var everyone: Everyone? = null
 
     @OneToMany(mappedBy = "merchant", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var products: MutableList<Product> = mutableListOf()
 
-    @OneToMany(mappedBy = "merchant", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var orders: MutableList<Order> = mutableListOf()
+//    @OneToMany(mappedBy = "merchant", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+//    var orders: MutableList<Order> = mutableListOf()
 }

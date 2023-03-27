@@ -21,8 +21,11 @@ class Order {
     @JoinColumn(name = "merchant_id", nullable = false)
     var merchant: Merchant? = null
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
+    var client: Client? = null
+
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var orderItems: MutableList<OrderItem> = mutableListOf()
-
 
 }

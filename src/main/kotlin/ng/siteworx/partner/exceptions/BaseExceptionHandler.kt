@@ -22,6 +22,15 @@ class BaseExceptionHandler {
         val error = ApiError(HttpStatus.NOT_FOUND.value(), ex.message, request.requestURI)
         return ResponseEntity(error, HttpStatus.NOT_FOUND)
     }
+
+    @ExceptionHandler(MerchantCouldNotBeDeletedException::class)
+    fun merchantCouldNotBeDeletedException(
+        ex: MerchantCouldNotBeDeletedException,
+        request: HttpServletRequest
+    ): ResponseEntity<ApiError> {
+        val error = ApiError(HttpStatus.BAD_REQUEST.value(), ex.message, request.requestURI)
+        return ResponseEntity(error, HttpStatus.NOT_FOUND)
+    }
 }
 
 data class ApiError(

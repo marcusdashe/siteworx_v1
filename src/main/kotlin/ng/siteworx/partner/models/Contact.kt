@@ -34,16 +34,20 @@ class Contact {
     @Column(name="state")
     var stateName: String? = null
 
-    @OneToOne(fetch = FetchType.LAZY, optional= false)
-    @JoinColumn(name = "artisan_id")
-    private var artisan: Artisan? = null
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "everyone_id")
+    var everyone: Everyone? = null
 
-    @OneToOne(fetch = FetchType.LAZY, optional= false)
-    @JoinColumn(name = "merchant_id")
-    private var merchant: Merchant? = null
-
-    @OneToOne(fetch = FetchType.LAZY, optional= false)
-    @JoinColumn(name = "client_id")
-    private var client: Client? = null
+//    @OneToOne(fetch = FetchType.LAZY, optional= false)
+//    @JoinColumn(name = "artisan_id")
+//    private var artisan: Artisan? = null
+//
+//    @OneToOne(fetch = FetchType.LAZY, optional= false)
+//    @JoinColumn(name = "merchant_id")
+//    private var merchant: Merchant? = null
+//
+//    @OneToOne(fetch = FetchType.LAZY, optional= false)
+//    @JoinColumn(name = "client_id")
+//    private var client: Client? = null
 
 }

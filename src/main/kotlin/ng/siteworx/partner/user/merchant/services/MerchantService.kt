@@ -1,43 +1,21 @@
 package ng.siteworx.partner.user.merchant.services
 
-import ng.siteworx.partner.exceptions.MerchantNotFoundException
-import ng.siteworx.partner.repository.EveryoneRepository
-import ng.siteworx.partner.user.merchant.repository.MerchantRepository
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Service
-import org.springframework.web.multipart.MultipartFile
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
+import ng.siteworx.partner.enums.Constants
+import ng.siteworx.partner.payload.request.MerchantRequest
+import ng.siteworx.partner.payload.response.MessageResponse
+import ng.siteworx.partner.user.merchant.model.Merchant
+import org.springframework.http.ResponseEntity
 
-
-@Service
-class MerchantService(private val merchantRepository: MerchantRepository, private val everyoneRepository: EveryoneRepository) {
-
-
-    @Value("\${file.upload-dir}")
-    private lateinit var uploadDir: String
-
-    fun uploadAvatar(username: String, file: MultipartFile): String? {
-//        val merchant = merchantRepository.findById(merchantId).orElse(null)
-//            ?: return null // Merchant with given ID not found
-
-        val everyone = everyoneRepository.findByUsername(username)
-            ?: throw MerchantNotFoundException("Merchant with username $username not found") // Merchant with given ID not found
-
-        val fileName = "${System.currentTimeMillis()}_${file.originalFilename}"
-        val filePath: Path = Paths.get(uploadDir + fileName)
-
-        return try {
-            Files.copy(file.inputStream, filePath)
-            merchant.avatarUrl = filePath.toString()
-            merchantRepository.save(merchant)
-            merchant.avatarUrl
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null // Error occurred during file upload
-        }
-    }
+interface MerchantService {
+    fun findByFirstNameLastName(firstName: String, lastName: String): ResponseEntity<Merchant?>
+    fun onboardMerchant(payload: MerchantRequest): ResponseEntity<*>
+    fun getMerchantById(id: Long): ResponseEntity<Merchant?>
+    fun updateMerchant(id: Long, payload: MerchantRequest): ResponseEntity<MessageResponse>
+    fun deleteMerchantById(id: Long): ResponseEntity<MessageResponse>
+    fun getAllMerchants():  ResponseEntity<MutableList<Merchant>>
+    fun getMerchantsBySubscriptionLevel(subscriptionLevel: Constants.SUBSCRIPTION_LEVEL): ResponseEntity<List<Merchant>>
+    fun getAvailableMerchants(isAvail: Boolean): ResponseEntity<List<Merchant>>
+    fun getUnavailableMerchants(): ResponseEntity<List<Merchant>>
+    fun subscribeMerchant(id: Long, subscriptionLevel: Constants.SUBSCRIPTION_LEVEL): ResponseEntity<MessageResponse>
 
 }
