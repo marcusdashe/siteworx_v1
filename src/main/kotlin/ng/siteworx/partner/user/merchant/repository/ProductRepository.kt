@@ -1,6 +1,7 @@
 package ng.siteworx.partner.user.merchant.repository
 
 import ng.siteworx.partner.enums.Constants
+import ng.siteworx.partner.user.merchant.model.Merchant
 import ng.siteworx.partner.user.merchant.model.Product
 import org.springframework.data.jpa.repository.JpaRepository
 
@@ -30,4 +31,5 @@ interface ProductRepository : JpaRepository<Product, Long> {
     // Save or update a product
     fun save(product: Product): Product
 
+    fun findByMerchant(merchant: Merchant): List<Product>
 }

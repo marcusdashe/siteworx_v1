@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional
 import ng.siteworx.partner.enums.Constants
 import ng.siteworx.partner.payload.request.ProductRequest
 import ng.siteworx.partner.payload.response.MessageResponse
+import ng.siteworx.partner.user.merchant.model.Merchant
 import ng.siteworx.partner.user.merchant.model.Product
 import ng.siteworx.partner.user.merchant.repository.ProductRepository
 import org.springframework.http.ResponseEntity
@@ -27,6 +28,18 @@ class ProductService(private val productRepository: ProductRepository) {
                 quantity = it.quantity
                 price = it.price
             }
+            return ResponseEntity.ok().body(productRepository.save(product))
+        }
+        return badRequestResponseEntity()
+    }
+
+    fun updateProduct(productId: Long, payload: ProductRequest?): ResponseEntity<*>{
+        payload?.let{
+            val product = productRepository.findById(productId).get()
+            product.name = it.name
+            product.description = it.description
+            product.price = it.price
+            product.quantity= it.quantity
             return ResponseEntity.ok().body(productRepository.save(product))
         }
         return badRequestResponseEntity()
@@ -60,6 +73,10 @@ fun fetchProductByName(name: String?): ResponseEntity<*> {
             return ResponseEntity.ok().body(this.productRepository.findByMerchantId(it))
         }
         return badRequestResponseEntity()
+    }
+
+    fun getProductsByMerchant(merchant: Merchant): List<Product> {
+        return this.productRepository.findByMerchant(merchant)
     }
 
     fun fetchProductByPriceLessThan(priceLessThan: Double?): ResponseEntity<*>{
